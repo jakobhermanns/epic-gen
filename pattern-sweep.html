@@ -7145,7 +7145,7 @@ void main(){
     title: 'Emblem',
     engine: () => ({ build, Buf, RendererClass: SpaceRenderer, svgFn: svg, extra: (L) => ({ look: L }), usesSource: (L) => L.space.drive !== 'off' }),
     animated: (L) => Source.animated(L) || L.space.flow !== 0 || L.space.turn !== 0 || L.cam.move !== 'still' || L.space.reveal === 'wave' || (L.space.world === 'terrain' && L.space.worlds.terrain.speed !== 0),
-    left: (kit) => [kit.looksSection(), kit.sourceSection()],
+    left: (kit) => [kit.looksSection()],   // the Source panel is hidden on Emblem
     right: (kit) => [worldSection(kit), emblemSection(kit), renderSection(kit), colourSection(kit), effectsSection(kit), cameraSection(kit), loopSection(kit), driveSection(kit)],
     mount: () => wireCamera(),
   };
