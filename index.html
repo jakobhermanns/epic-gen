@@ -325,6 +325,10 @@ svg.i{width:16px;height:16px;flex:none;display:block}
 .ed{position:absolute;pointer-events:auto}
 .size-badge{position:absolute;left:50%;top:100%;margin-top:8px;transform:translateX(-50%);background:var(--brand);color:#00142D;font-size:11px;padding:2px 7px;border-radius:5px;white-space:nowrap;opacity:0;transition:opacity .16s}
 .board-ui.sizing .size-badge{opacity:1}
+/* camera controls under the canvas (Emblem and Sweep): small and dim; gone while resizing or with the panels hidden */
+.nav-hint{position:absolute;left:50%;top:100%;margin-top:10px;transform:translateX(-50%);display:flex;gap:14px;font-size:10.5px;color:var(--text-3);opacity:.7;white-space:nowrap;pointer-events:none;transition:opacity .16s}
+.nav-hint b{font-weight:400;color:var(--text-2)}
+.board-ui.sizing .nav-hint,.app[data-ui="off"] .nav-hint{opacity:0}
 
 /* the play bar sits at the centre of the window, not of the canvas, so resizing or hiding panels never moves it */
 .playbar{position:fixed;z-index:7;left:50%;bottom:calc(16px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:6px;background:var(--panel);border-radius:12px;box-shadow:var(--shadow);max-width:calc(100% - 24px)}
@@ -5693,6 +5697,9 @@ const App = (() => {
     else $('rightPanel').append(gridSection(), emblemSection(), colorSection(), loopSection());
     // the frame size sits pinned above the canvas, where its label was
     $('boardName').append(frameBar());
+    // Emblem and Sweep: how the camera is moved, pinned under the canvas
+    if (REG && REG.mount) $('boardUi').append(el('div', { class: 'nav-hint', 'aria-hidden': 'true' },
+      ...[['Drag', 'Orbit'], ['⇧ Drag', 'Move'], ['⌥ Scroll', 'Distance'], ['⌘ Scroll', 'Zoom']].map(([k, t]) => el('span', {}, el('b', { text: k }), ' ' + t))));
     tabify($('leftPanel'));
     // Studio: tone shapes the source, so it sits under it in the same panel (added after tabs, so it never becomes a tab)
     if (!REG) $('leftPanel').append(toneSection());
