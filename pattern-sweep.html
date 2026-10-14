@@ -2614,8 +2614,7 @@ const Brand = (() => {
     { name: 'Epic Lime', hex: '#B6EA00', role: 'primary' },
     { name: 'Seashell Grey', hex: '#DDDCD8', role: 'primary' },
     { name: 'Pure White', hex: '#FFFFFF', role: 'primary' },
-    { name: 'Surface 1', hex: '#282D4A', role: 'surface' },
-    { name: 'Surface 2', hex: '#202540', role: 'surface' },
+    { name: 'Pure Black', hex: '#000000', role: 'primary' },
     { name: 'Sapphire', hex: '#004992', role: 'accent' },
     { name: 'Ruby', hex: '#FF1322', role: 'accent' },
     { name: 'Diamond', hex: '#CCE6ED', role: 'accent' },
@@ -2969,6 +2968,10 @@ const Brand = (() => {
     let saved = null;
     try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { saved = null; }
     const palette = saved && Array.isArray(saved.palette) && saved.palette.length ? saved.palette.filter((p) => U.isHex(p.hex)).map((p) => ({ name: String(p.name || p.hex).slice(0, 24), hex: U.normHex(p.hex), role: ['primary', 'surface', 'accent'].includes(p.role) ? p.role : 'primary' })) : U.clone(DEFAULT_PALETTE);
+    // Surface 1 and 2 were retired for Pure Black: take them out of palettes saved before, and add black
+    const gone = ['#282D4A', '#202540'];
+    for (let i = palette.length - 1; i >= 0; i--) if (gone.includes(palette[i].hex.toUpperCase())) palette.splice(i, 1);
+    if (!palette.some((p) => p.hex.toUpperCase() === '#000000')) palette.splice(Math.min(4, palette.length), 0, { name: 'Pure Black', hex: '#000000', role: 'primary' });
     const emblems = [makeEmblem(ORIGINAL)];
     if (saved && Array.isArray(saved.emblems)) for (const e of saved.emblems) { try { emblems.push(makeEmblem({ id: e.id, name: e.name, region: e.region, aspect: e.aspect })); } catch (err) { /* ignore broken */ } }
     return { palette, emblems };
@@ -3298,7 +3301,7 @@ const Look = (() => {
     stack: { profile: 'arrow', amp: 0.3, width: 1, step: 1.12, group: 6, space: 1.5, thin: true, parallax: 'off', source: 'off', freq: 1 },
     slices: { count: 7, size: 0.9, y: -0.1, profile: 'arrow', amp: 1.4, echoes: 6, step: 1.14, taper: 0.55, gap: 0, motion: 'assemble' },
     echo: { on: false, count: 4, spacing: 1.15, decay: 0.72, thin: true, shrink: 0 },
-    backdrop: { on: false, scale: 3.5, color: '#282D4A', opacity: 1, drift: 1 },
+    backdrop: { on: false, scale: 3.5, color: '#00142D', opacity: 1, drift: 1 },
     mark: { shape: 'emblem', minSize: 0.3, maxSize: 0.9, weight: 0.08, orient: 'align', depthFade: 0.5, jitter: 0 },
     motion: { loop: 4, ease: [0.83, 0, 0.17, 1], hold: 0.3, wave: 'off', spread: 0.5, drift: 0 },
   };
@@ -4358,7 +4361,7 @@ const Store = (() => {
    ===================================================================== */
 const Presets = (() => {
   const S = (id, p, soft) => ({ kind: 'shape', shape: id, softness: soft, shapes: { [id]: p || {} } });
-  const NAVY = '#00142D', LIME = '#B6EA00', SEA = '#DDDCD8', WHITE = '#FFFFFF', SAPPHIRE = '#004992', RUBY = '#FF1322', DIAMOND = '#CCE6ED', SURF = '#282D4A', SURF2 = '#202540';
+  const NAVY = '#00142D', LIME = '#B6EA00', SEA = '#DDDCD8', WHITE = '#FFFFFF', SAPPHIRE = '#004992', RUBY = '#FF1322', DIAMOND = '#CCE6ED';
   const C = (bg, fg, mode = 'solid', hi = DIAMOND, opacity = 1, opLow = 0.35, fade = false, more = {}) => ({ bg, fg, hi, mode, opacity, opLow, fade, transparent: false, bgMode: 'solid', bgPair: 0, bgFlip: false, ...more });
   const LIN = [0, 0, 1, 1], SMOOTH = [0.45, 0, 0.55, 1], SNAP = [0.83, 0, 0.17, 1], OUT = [0.16, 1, 0.3, 1], GLIDE = [0.65, 0.05, 0.36, 1];
   const G = (g) => ({ kind: 'gradient', softness: 0, gradient: { type: 'linear', angle: 0, from: 0, to: 1, mid: 0.5, repeat: 1, animate: 'none', ...g } });
@@ -6960,7 +6963,7 @@ void main(){
   /* ---------------------------------------------------------------
      DOCUMENT · ranges, enums and defaults for the Space page
      --------------------------------------------------------------- */
-  const NAVY = '#00142D', LIME = '#B6EA00', WHITE = '#FFFFFF', SAPPHIRE = '#004992', RUBY = '#FF1322', DIAMOND = '#CCE6ED', SURF = '#282D4A', SURF2 = '#202540', SEA = '#DDDCD8';
+  const NAVY = '#00142D', LIME = '#B6EA00', WHITE = '#FFFFFF', SAPPHIRE = '#004992', RUBY = '#FF1322', DIAMOND = '#CCE6ED', SEA = '#DDDCD8';
   const worldsDefault = () => Object.fromEntries(WORLDS.map((x) => [x.id, Object.fromEntries(x.params.map((p) => [p.k, p.def]))]));
   const spec = {
     'space.size': { min: 0.05, max: 4, step: 0.01 }, 'space.angle': { min: -180, max: 180, step: 1 }, 'space.bank': { min: -180, max: 180, step: 1 },
@@ -8016,7 +8019,7 @@ void main(){
   /* ---------------------------------------------------------------
      DOCUMENT
      --------------------------------------------------------------- */
-  const NAVY = '#00142D', LIME = '#B6EA00', WHITE = '#FFFFFF', SAPPHIRE = '#004992', RUBY = '#FF1322', DIAMOND = '#CCE6ED', SURF = '#282D4A', SURF2 = '#202540';
+  const NAVY = '#00142D', LIME = '#B6EA00', WHITE = '#FFFFFF', SAPPHIRE = '#004992', RUBY = '#FF1322', DIAMOND = '#CCE6ED';
   const kindsDefault = () => Object.fromEntries(STRUCTS.map((x) => [x.id, Object.fromEntries(x.params.map((p) => [p.k, p.def]))]));
   const spec = {
     'sweep.seed': { min: 1, max: 9999, step: 1 }, 'sweep.light': { min: -180, max: 180, step: 1 }, 'sweep.lightZ': { min: -1, max: 1, step: 0.01 },
