@@ -4305,7 +4305,10 @@ const Store = (() => {
     try { saved = JSON.parse(localStorage.getItem(KEY()) || 'null'); } catch (e) { saved = null; }
     look = Look.validate(saved || Look.DEFAULT, palette);
     fresh = !saved;
-    if (look.source.kind === 'image' || look.source.kind === 'video') look.source.kind = 'shape'; // media is not persisted
+    // the Source page always opens on Image, ready for a drop (no file dialog until someone clicks Image);
+    // elsewhere a saved image or video falls back to a shape, since media is not persisted
+    if (Look.page === 'studio') look.source.kind = 'image';
+    else if (look.source.kind === 'image' || look.source.kind === 'video') look.source.kind = 'shape';
   }
   const get = () => look;
   function snapshot() { if (pending == null) pending = JSON.stringify(look); }
