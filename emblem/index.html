@@ -393,6 +393,15 @@ textarea.tin{height:64px;padding:8px 10px;resize:vertical;line-height:1.4}
   .rz-left{display:none}
   .panel.left{opacity:0;pointer-events:none}
 }
+/* small touch screens get a calm note instead of the tool */
+.mobile-gate{display:none}
+@media (max-width:760px),(hover:none) and (pointer:coarse) and (max-width:1024px){
+  .mobile-gate{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:32px;background:#111215;text-align:center}
+  .mobile-gate .m-logo{height:22px;width:auto;display:block;color:#B6EA00}
+  .mobile-gate .m-logo .logo-b{fill:#F1F1F3}
+  .mobile-gate p{margin:0;max-width:300px;font-size:13px;line-height:1.6;color:#686B73;letter-spacing:.01em}
+  .app,.boot{display:none!important}
+}
 @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
 
 .save-row{display:grid;grid-template-columns:1fr auto;gap:6px}
@@ -417,6 +426,11 @@ textarea.tin{height:64px;padding:8px 10px;resize:vertical;line-height:1.4}
 </style>
 </head>
 <body data-page="space">
+<!-- phones and small tablets: the tool needs a computer, so they only see this -->
+<div class="mobile-gate" role="note">
+  <svg class="m-logo" viewBox="0 0 1447 176" role="img" aria-label="Epic Gen" fill="currentColor"><path d="M557.255 135.998V35.1103H709.732L682.788 10.2963C675.644 3.7267 665.953 0.0234375 655.843 0.0234375H514.395V108.297C514.395 117.607 518.405 126.52 525.548 133.111L560.409 165.185C567.553 171.754 577.244 175.458 587.354 175.458H704.991V140.371H562.038C559.407 140.371 557.276 138.404 557.276 135.977L557.255 135.998Z"/><path d="M341.343 0.0209224H218.943V175.455H261.825V100.888L274.483 112.542C281.626 119.111 291.318 122.814 301.427 122.814H414.281V67.1609C414.281 57.8504 410.271 48.9375 403.127 42.3469L368.267 10.2729C361.123 3.70326 351.431 0 341.322 0L341.343 0.0209224ZM261.846 35.1078H366.658C369.29 35.1078 371.421 37.0745 371.421 39.5015V87.7485H261.825V35.1078H261.846Z"/><path d="M485.778 0.0234375H442.896V175.458H485.778V0.0234375Z"/><path d="M195.359 35.1103L168.414 10.2963C161.271 3.7267 151.579 0.0234375 141.47 0.0234375H0V108.297C0 117.607 4.01036 126.52 11.1538 133.111L46.0147 165.185C53.1581 171.754 62.8498 175.458 72.9593 175.458H190.596V140.371H47.6439C45.0121 140.371 42.8816 138.404 42.8816 135.977V105.263H190.596V70.1762H42.8816V35.0894H195.359V35.1103Z"/><path d="M937.75 77.25H1016.25V131C1016.25 137 1013.75 142.75 1009.25 147.25L987.25 169.25C983 173.5 977 176 971 176H867.5C861.5 176 856 173.75 851.75 169.5L828 146C823.75 141.75 821.25 136.25 821.25 130.25V1H984.75C990.25 1 995.75 3.25 999.75 7.25001L1016.25 23.5H844V149C844 151.5 846 153.5 848.25 153.5H989.25C991.5 153.5 993.5 151.5 993.5 149V99.75H937.75V77.25Z" class="logo-b"/><path d="M1085.03 176C1079.03 176 1073.53 173.75 1069.28 169.5L1045.53 146C1041.28 141.75 1038.78 136 1038.78 130.25V1H1199.78C1205.53 1 1211.03 3.25 1215.03 7.25001L1231.28 23.5H1061.53V77.25H1228.78V99.75H1061.53V149C1061.53 151.5 1063.53 153.5 1065.78 153.5H1228.78V176H1085.03Z" class="logo-b"/><path d="M1439.43 31.75C1443.68 36 1446.18 42 1446.18 48V176H1423.43V28C1423.43 25.5 1421.43 23.5 1418.93 23.5H1273.93V176H1251.18V1H1399.18C1405.18 1 1410.93 3.25 1415.18 7.50001L1439.43 31.75Z" class="logo-b"/></svg>
+  <p>Epic Gen is built for larger screens.<br>Open it on a computer to start creating.</p>
+</div>
 <div class="app" id="app" data-ui="on">
   <header class="topbar">
     <div class="tb-left">
