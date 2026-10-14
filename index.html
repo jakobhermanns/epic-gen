@@ -5180,7 +5180,7 @@ const App = (() => {
     } else {
       const has = Engine.st.mediaKind === k && Engine.st.media;
       if (!has) {
-        const dz = el('div', { class: 'drop', role: 'button', tabindex: 0, onclick: () => openFile(k) }, el('span', { html: ICON.upload }), el('span', { text: k === 'video' ? 'Drop a video or click to browse' : 'Drop an image or click to browse' }), el('small', { text: k === 'video' ? 'MP4, MOV or WebM' : 'PNG, JPG, WebP or paste with ' + KEYS.mod + 'V' }));
+        const dz = el('div', { class: 'drop', role: 'button', tabindex: 0, onclick: () => openFile(k) }, el('span', { html: ICON.upload }), el('span', {}, k === 'video' ? 'Drop a video' : 'Drop an image', el('br'), 'or click to browse'));
         dz.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFile(k); } });
         srcBody.append(dz);
       } else {
