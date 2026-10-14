@@ -6975,7 +6975,7 @@ void main(){
   for (const wd of WORLDS) for (const p of wd.params) { if (p.type !== 'seg') spec[`space.worlds.${wd.id}.${p.k}`] = { min: p.min, max: p.max, step: p.step }; else segEnums[`space.worlds.${wd.id}.${p.k}`] = p.opts.map((o) => o[0]); }
   const enums = {
     'space.world': WORLDS.map((x) => x.id), 'space.point': ['path', 'out', 'in', 'up'], 'space.face': ['axis', 'surface', 'camera'],
-    'space.drive': ['off', 'size', 'reveal', 'flip'], 'space.map': ['screen', 'surface'], 'space.reveal': ['off', 'wave'],
+    'space.drive': ['off'], 'space.map': ['screen', 'surface'], 'space.reveal': ['off', 'wave'],
     'mesh.kind': ['card', 'solid'], 'render.style': ['flat', 'outline'],
     'cam.lens': ['persp', 'ortho'], 'cam.move': ['still', 'orbit', 'sway', 'push', 'roll', 'float'],
     'color.mode': ['solid', 'tonal', 'gradient', 'mono', 'depth', 'alternate'],
@@ -7146,7 +7146,7 @@ void main(){
     engine: () => ({ build, Buf, RendererClass: SpaceRenderer, svgFn: svg, extra: (L) => ({ look: L }), usesSource: (L) => L.space.drive !== 'off' }),
     animated: (L) => Source.animated(L) || L.space.flow !== 0 || L.space.turn !== 0 || L.cam.move !== 'still' || L.space.reveal === 'wave' || (L.space.world === 'terrain' && L.space.worlds.terrain.speed !== 0),
     left: (kit) => [kit.looksSection()],   // the Source panel is hidden on Emblem
-    right: (kit) => [worldSection(kit), emblemSection(kit), renderSection(kit), colourSection(kit), effectsSection(kit), cameraSection(kit), loopSection(kit), driveSection(kit)],
+    right: (kit) => [worldSection(kit), emblemSection(kit), renderSection(kit), colourSection(kit), effectsSection(kit), cameraSection(kit), loopSection(kit)],   // Source drive is hidden (and locked off) with the Source panel
     mount: () => wireCamera(),
   };
   return { WORLDS, WORLD, Geo, build, svg, SpaceRenderer, cameraOf, LOOKS, wireCamera };
