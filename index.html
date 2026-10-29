@@ -2624,8 +2624,12 @@ const Ease = (() => {
 const Brand = (() => {
   /* Brand book, Color pages 13-15. Accents are never main backgrounds. */
   const DEFAULT_PALETTE = [
-    { name: 'Deep Space Navy', hex: '#00142D', role: 'primary' },
-    { name: 'Epic Lime', hex: '#B6EA00', role: 'primary' },
+    // the 2026 palette first: base, surfaces, detail, light, signal
+    { name: 'Midnight', hex: '#00142D', role: 'primary' },
+    { name: 'Slate', hex: '#26334A', role: 'surface' },
+    { name: 'Silver', hex: '#C8D0DA', role: 'primary' },
+    { name: 'Pearl', hex: '#F5F7FA', role: 'primary' },
+    { name: 'Hyper Lime', hex: '#B6EA00', role: 'primary' },
     { name: 'Seashell Grey', hex: '#DDDCD8', role: 'primary' },
     { name: 'Pure White', hex: '#FFFFFF', role: 'primary' },
     { name: 'Pure Black', hex: '#000000', role: 'primary' },
@@ -2635,12 +2639,15 @@ const Brand = (() => {
   ];
   /* Brand book, Gradients page: allowed pairs. a sits top left, b (bright) bottom right */
   const GRADIENTS = [
-    { name: 'Navy to Lime', a: '#00142D', b: '#B6EA00' }, { name: 'Navy to Seashell', a: '#00142D', b: '#DDDCD8' },
-    { name: 'Navy to White', a: '#00142D', b: '#FFFFFF' }, { name: 'Navy to Sapphire', a: '#00142D', b: '#004992' },
-    { name: 'Navy to Ruby', a: '#00142D', b: '#FF1322' }, { name: 'Navy to Diamond', a: '#00142D', b: '#CCE6ED' },
+    { name: 'Midnight to Lime', a: '#00142D', b: '#B6EA00' }, { name: 'Midnight to Seashell', a: '#00142D', b: '#DDDCD8' },
+    { name: 'Midnight to White', a: '#00142D', b: '#FFFFFF' }, { name: 'Midnight to Sapphire', a: '#00142D', b: '#004992' },
+    { name: 'Midnight to Ruby', a: '#00142D', b: '#FF1322' }, { name: 'Midnight to Diamond', a: '#00142D', b: '#CCE6ED' },
     { name: 'Diamond to Lime', a: '#CCE6ED', b: '#B6EA00' }, { name: 'White to Ruby', a: '#FFFFFF', b: '#FF1322' },
     { name: 'White to Sapphire', a: '#FFFFFF', b: '#004992' }, { name: 'White to Diamond', a: '#FFFFFF', b: '#CCE6ED' },
     { name: 'Ruby to Lime', a: '#FF1322', b: '#B6EA00' },
+    // 2026 palette (added last so saved looks keep their gradient)
+    { name: 'Silver to Pearl', a: '#C8D0DA', b: '#F5F7FA' }, { name: 'Midnight to Slate', a: '#00142D', b: '#26334A' },
+    { name: 'Silver to Slate', a: '#C8D0DA', b: '#97A1AF' },   // Silver a third of the way into Slate, as in Jakob's artboard 3
   ];
   /* original.svg (viewBox 610.02 x 492.38). frames = inner-copy offsets of
      1.svg ... 7.svg (down is +) as a fraction of the emblem height. */
@@ -2986,6 +2993,9 @@ const Brand = (() => {
     const gone = ['#282D4A', '#202540'];
     for (let i = palette.length - 1; i >= 0; i--) if (gone.includes(palette[i].hex.toUpperCase())) palette.splice(i, 1);
     if (!palette.some((p) => p.hex.toUpperCase() === '#000000')) palette.splice(Math.min(4, palette.length), 0, { name: 'Pure Black', hex: '#000000', role: 'primary' });
+    // the 2026 palette: Navy and Lime are renamed, Slate, Silver and Pearl are added up front
+    for (const p of palette) { const h = p.hex.toUpperCase(); if (h === '#00142D') p.name = 'Midnight'; if (h === '#B6EA00') p.name = 'Hyper Lime'; }
+    DEFAULT_PALETTE.slice(0, 5).forEach((d, i) => { if (!palette.some((p) => p.hex.toUpperCase() === d.hex)) palette.splice(i, 0, { ...d }); });
     const emblems = [makeEmblem(ORIGINAL)];
     if (saved && Array.isArray(saved.emblems)) for (const e of saved.emblems) { try { emblems.push(makeEmblem({ id: e.id, name: e.name, region: e.region, aspect: e.aspect })); } catch (err) { /* ignore broken */ } }
     return { palette, emblems };
@@ -3266,7 +3276,7 @@ const Look = (() => {
     'slices.taper': { min: 0, max: 1, step: 0.01 }, 'slices.gap': { min: 0, max: 0.6, step: 0.01 },
     'echo.count': { min: 1, max: 10, step: 1 }, 'echo.spacing': { min: 0.5, max: 4, step: 0.01 }, 'echo.decay': { min: 0.2, max: 1, step: 0.01 }, 'echo.shrink': { min: 0, max: 0.9, step: 0.01 },
     'backdrop.scale': { min: 1.5, max: 8, step: 0.1 }, 'backdrop.opacity': { min: 0.05, max: 1, step: 0.01 }, 'backdrop.drift': { min: -4, max: 4, step: 1 },
-    'color.bgPair': { min: 0, max: 10, step: 1 },
+    'color.bgPair': { min: 0, max: Brand.GRADIENTS.length - 1, step: 1 },
     'mark.minSize': { min: 0, max: 2, step: 0.01 }, 'mark.maxSize': { min: 0.05, max: 3, step: 0.01 }, 'mark.weight': { min: 0.02, max: 0.6, step: 0.005 },
     'mark.depthFade': { min: 0, max: 2, step: 0.01 }, 'mark.jitter': { min: 0, max: 1, step: 0.01 },
   };
